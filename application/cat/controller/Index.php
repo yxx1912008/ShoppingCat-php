@@ -8,6 +8,15 @@ class Index
 {
     public function index()
     {
-        return 'this is cat';
+        return 'this is cat module';
     }
+
+    /**
+     * 测试数据库
+     */
+    public function testDb()
+    {
+
+    }
+    
 }
