@@ -12,9 +12,9 @@
 Route::get('think', function () {
     return 'hello,ThinkPHP5!';
 });
-
 Route::get('hello/:name', 'index/hello');
-
+// 获取首页海报
+Route::get('cat/api/getIndexBanner.do', 'cat/api/getIndexBanner');
 return [
 
 ];
