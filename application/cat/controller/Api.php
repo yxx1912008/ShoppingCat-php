@@ -2,6 +2,8 @@
 namespace app\cat\controller;
 
 use app\cat\model\BannerModel;
+use app\cat\model\ResponseObj;
+use app\cat\model\WxAppStatus;
 use QL\QueryList;
 
 /**
@@ -49,4 +51,31 @@ class Api
         }
         return json($list);
     }
+
+    /**
+     *
+     * 注解：获取微信小程序状态值
+     * url: /cat/api/getWxAppStatus.do
+     * @param versionId
+     * @return
+     * @author yuanxx @date 2018年9月18日
+     */
+    public function getWxAppStatus($versionId = '1.0.0')
+    {
+        $wxAppStatus = WxAppStatus::get($versionId);
+        $catApiUrl = Config('CAT_API_URL'); //购物猫api地址
+        $result = [
+            'status' => $wxAppStatus['status'],
+            'versionId' => $wxAppStatus['version_id'],
+            'baseUrl' => $catApiUrl,
+        ];
+
+        $model = new ResponseObj([
+            'status' => 1,
+            'showMessage' => '操作成功',
+            'data' => $result,
+        ]);
+        return json($model);
+    }
+
 }
