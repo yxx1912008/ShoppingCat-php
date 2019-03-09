@@ -12,9 +12,12 @@
 Route::get('think', function () {
     return 'hello,ThinkPHP5!';
 });
-Route::get('hello/:name', 'index/hello');
+Route::post('hello/:name', 'index/hello');
 // 获取首页海报
-Route::get('cat/api/getIndexBanner.do', 'cat/api/getIndexBanner');
+Route::post('cat/api/getIndexBanner.do', 'cat/api/getIndexBanner');
+//查询微信小程序状态
+Route::post('cat/api/getWxAppStatus.do','cat/api/getWxAppStatus');
+
 return [
 
 ];
