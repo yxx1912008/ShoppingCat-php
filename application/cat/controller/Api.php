@@ -4,7 +4,11 @@ namespace app\cat\controller;
 use app\cat\model\BannerModel;
 use app\cat\model\ResponseObj;
 use app\cat\model\WxAppStatus;
-use QL\QueryList;
+use QL\QueryList; //网页抓取依赖
+use think\facade\Cache;
+//缓存依赖
+
+//日志依赖
 
 /**
  * 购物猫相关api接口
@@ -22,34 +26,6 @@ class Api
             echo '匹配no通过';
         }
         return 'this is api';
-    }
-
-    /**
-     * 获取首页海报
-     * @return:
-     */
-    public function getIndexBanner()
-    {
-        $catUrl = Config('CAT_URL'); //购物猫网站地址
-        $rules = [
-            'bannerImg' => ['.banner-center > .swiper-wrapper > .swiper-slide a img', 'src'], //采集首页海报图片地址
-            'goodId' => ['.banner-center > .swiper-wrapper > .swiper-slide > a', 'href'],
-        ]; //queryList的匹配规则
-        $html = QueryList::get($catUrl)->rules($rules)->query()->getData();
-        $list = []; //存储返回结果
-        $pattern = '/id=(\d+)&/'; //正则匹配规则
-        for ($i = 0; $i < count($html); $i++) {
-            $str = $html[$i]['goodId']; //商品ID
-            $picUrl = $html[$i]['bannerImg']; //图片地址
-            if (preg_match($pattern, $str, $result)) {
-                $model = new BannerModel([
-                    'bannerImg' => $picUrl,
-                    'goodId' => $result[1],
-                ]);
-                array_push($list, $model);
-            }
-        }
-        return json($list);
     }
 
     /**
@@ -76,6 +52,39 @@ class Api
             'data' => $result,
         ]);
         return json($model);
+    }
+
+    /**
+     * 获取首页海报
+     * @return:
+     */
+    public function getIndexBanner()
+    {
+        if (Cache::has('BANNER_CACHE')) { //缓存中是否存在
+            $result = Cache::get('BANNER_CACHE');
+            return json($result);
+        }
+        $catUrl = Config('CAT_URL'); //购物猫网站地址
+        $rules = [
+            'bannerImg' => ['.banner-center > .swiper-wrapper > .swiper-slide a img', 'src'], //采集首页海报图片地址
+            'goodId' => ['.banner-center > .swiper-wrapper > .swiper-slide > a', 'href'],
+        ]; //queryList的匹配规则
+        $html = QueryList::get($catUrl)->rules($rules)->query()->getData();
+        $list = []; //存储返回结果
+        $pattern = '/id=(\d+)&/'; //正则匹配规则
+        for ($i = 0; $i < count($html); $i++) {
+            $str = $html[$i]['goodId']; //商品ID
+            $picUrl = $html[$i]['bannerImg']; //图片地址
+            if (preg_match($pattern, $str, $result)) {
+                $model = new BannerModel([
+                    'bannerImg' => $picUrl,
+                    'goodId' => $result[1],
+                ]);
+                array_push($list, $model);
+            }
+        }
+        Cache::set('BANNER_CACHE', $list, Config('BANNER_CACHE_TIME'));
+        return json($list);
     }
 
 }
