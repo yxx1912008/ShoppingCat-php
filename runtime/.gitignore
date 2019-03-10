@@ -1,2 +1,6 @@
 *
 !.gitignore
+###屏蔽log文件夹
+/log
+#屏蔽缓存文件夹
+/cache
