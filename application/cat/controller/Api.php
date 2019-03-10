@@ -6,6 +6,7 @@ use app\cat\model\ResponseObj;
 use app\cat\model\WxAppStatus;
 use QL\QueryList; //网页抓取依赖
 use think\facade\Cache;
+
 //缓存依赖
 
 //日志依赖
@@ -85,6 +86,27 @@ class Api
         }
         Cache::set('BANNER_CACHE', $list, Config('BANNER_CACHE_TIME'));
         return json($list);
+    }
+
+    /**
+     * 获取咚咚抢商品列表信息
+     */
+    public function getCurrentQiang()
+    {
+
+        if (Cache::has('CUTTENT_BUY')) {
+            return json(Cache::get('CUTTENT_BUY'));
+        }
+        $catUrl = Config('CAT_URL') . 'r=index/wap'; //购物猫网站地址
+        $html = QueryList::get($catUrl)->getHtml();
+        $pattern = '/indexWillBring","data":(.*?),"mta_name"/'; //正则匹配规则
+        if (preg_match($pattern, $html, $result)) {
+            $json = json_decode($result[1]);
+            Cache::set('CUTTENT_BUY', $json->config->list, 10);
+            return json($json->config->list);
+        }
+        return ['status' => 0, 'messange' => '操作失败', 'data' => ''];
+
     }
 
 }
