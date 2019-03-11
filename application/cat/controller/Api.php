@@ -6,6 +6,7 @@ use app\cat\model\ResponseObj;
 use app\cat\model\WxAppStatus;
 use QL\QueryList; //网页抓取依赖
 use think\facade\Cache;
+use think\facade\Log;
 
 //缓存依赖
 
@@ -107,6 +108,28 @@ class Api
         }
         return ['status' => 0, 'messange' => '操作失败', 'data' => ''];
 
+    }
+
+    /**
+     *获取正在抢购商品列表
+     */
+    public function getTicketLive($page = 1)
+    {
+
+        $catUrl = Config('CAT_URL') . 'r=index/ajaxnew&page=' . $page; //购物猫网站地址
+        if (Cache::has('LIVE_CAC_ID') && !empty(Cache::get('LIVE_CAC_ID'))) {
+            $catUrl = $catUrl . '&cac_id=' . Cache::get('LIVE_CAC_ID');
+            Log::info('缓存不为空' . $catUrl);
+        }
+        $res = requestUrl($catUrl, 'GET');
+        if (empty($res)) {
+            return json(['status' => '0', 'messange' => '操作失败', 'data' => '']);
+        }
+        if ($page == 1) {
+            $json = json_decode($res);
+            Cache::set('LIVE_CAC_ID', $json->data->cac_id, 30);
+        }
+        return $res;
     }
 
 }

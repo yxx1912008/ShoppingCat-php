@@ -8,3 +8,8 @@ POST http://127.0.0.1/cat/api/getIndexBanner.do HTTP/1.1
 
 ### 3.获取咚咚抢商品列表信息
 POST http://127.0.0.1/cat/api/getCurrentQiang.do HTTP/1.1 
+
+### 4.获取正在抢购商品列表
+POST http://127.0.0.1/cat/api/getTicketLive.do?page=1 HTTP/1.1 
+
+
