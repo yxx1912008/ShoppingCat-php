@@ -146,4 +146,33 @@ class Api
         return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
     }
 
+    /**
+     * 获取商品详情
+     *
+     */
+    public function getGoodDetail($goodId = '')
+    {
+        if (empty($goodId)) {
+            return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+        }
+        $catUrl = Config('CAT_URL') . 'r=p/d&id=' . $goodId; //请求商品详情的地址
+        $res = requestUrl($catUrl, 'GET');
+        
+        
+        
+        if (empty($res)) {
+            return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+        }
+
+        $rules = [
+            'bannerImg' => ['.banner-center > .swiper-wrapper > .swiper-slide a img', 'src'], //采集首页海报图片地址
+            'goodId' => ['.banner-center > .swiper-wrapper > .swiper-slide > a', 'href'],
+        ]; //queryList的匹配规则
+        $html = QueryList::get($catUrl)->rules($rules)->query()->getData();
+
+
+
+        return $res;
+    }
+
 }
