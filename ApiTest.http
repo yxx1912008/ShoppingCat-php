@@ -12,4 +12,5 @@ POST http://127.0.0.1/cat/api/getCurrentQiang.do HTTP/1.1
 ### 4.获取正在抢购商品列表
 POST http://127.0.0.1/cat/api/getTicketLive.do?page=4 HTTP/1.1 
 
-
+### 5.搜索商品
+POST  http://127.0.0.1/cat/api/searchGood.do HTTP/1.1 
