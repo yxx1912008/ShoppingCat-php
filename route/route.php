@@ -21,6 +21,9 @@ Route::post('cat/api/getWxAppStatus.do', 'cat/api/getWxAppStatus');
 Route::post('cat/api/getCurrentQiang.do', 'cat/api/getCurrentQiang');
 //获取正在抢购商品列表
 Route::post('cat/api/getTicketLive.do', 'cat/api/getTicketLive');
+//搜索商品
+Route::post('cat/api/searchGood.do', 'cat/api/searchGood');
+
 return [
 
 ];
