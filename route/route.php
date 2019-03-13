@@ -21,6 +21,7 @@ Route::group('cat/api', [
     '/getTicketLive' => ['cat/api/getTicketLive'], //获取正在抢购商品列表
     '/searchGood' => ['cat/api/searchGood'], //搜索商品
     '/getGoodDetail' => ['cat/api/getGoodDetail'], //获取商品详情
+    '/getGoodCodeText' => ['cat/api/getGoodCodeText'], //获取商品淘口令
 ])->ext('do')->method('POST');
 
 return [
