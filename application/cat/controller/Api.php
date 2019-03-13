@@ -181,4 +181,19 @@ class Api
         return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
     }
 
+    /**
+     *
+     * 获取商品淘口令
+     */
+    public function getGoodCodeText($goodId = '')
+    {
+        if (empty($goodId)) {
+            return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+        }
+        $catUrl = Config('CAT_URL') . 'r=p/d&id=' . $goodId; //请求商品详情的地址
+        //TODO 关键 获取淘口令需要调用淘宝官方接口
+        $html = QueryList::get($catUrl)->getHtml();
+        return $html;
+    }
+
 }
