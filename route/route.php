@@ -22,6 +22,7 @@ Route::group('cat/api', [
     '/searchGood' => ['cat/api/searchGood'], //搜索商品
     '/getGoodDetail' => ['cat/api/getGoodDetail'], //获取商品详情
     '/getGoodCodeText' => ['cat/api/getGoodCodeText'], //获取商品淘口令
+    '/getGoodDescImg' => ['cat/api/getGoodDescImg'], //根据商品的真实ID获取商品的主图信息
 ])->ext('do')->method('POST');
 
 return [

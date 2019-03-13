@@ -22,4 +22,5 @@ POST  http://127.0.0.1/cat/api/getGoodDetail.do?goodId=18644272 HTTP/1.1
 POST  http://127.0.0.1/cat/api/getGoodCodeText.do?goodId=18644272 HTTP/1.1
 
 
-
+### 7.获取商品介绍主图
+POST  http://127.0.0.1/cat/api/getGoodDescImg.do?realGoodId=554905594641 HTTP/1.1
