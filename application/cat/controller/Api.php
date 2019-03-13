@@ -177,8 +177,12 @@ class Api
             $imgList = QueryList::html($res)->find('.imglist > img')->attrs('data-original')->map(function ($item) {
                 return 'https:' . $item;
             })->all();
-            //根据商品的真实ID进行商品内容图的存储
-            Cache::set('imgList' . $json->goodsid, $imgList, 60 * 60 * 2); //缓存两个小时
+
+            if (!Cache::has('imgList' . $json->goodsid)) {
+                //根据商品的真实ID进行商品内容图的存储
+                Cache::set('imgList' . $json->goodsid, $imgList, 60 * 60 * 2); //缓存两个小时
+            }
+
             return json($json);
         }
         return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
@@ -208,6 +212,47 @@ class Api
             return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
         }
         return json(Cache::get('imgList' . $realGoodId));
+    }
+
+    /**
+     * 根据商品真实（即淘宝内部ID）获取商品信息
+     */
+    public function getGoodDetailByRealId($realGoodId = '')
+    {
+        if (empty($realGoodId) || !Cache::has('imgList' . $realGoodId)) {
+            return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+        }
+
+        $catUrl = Config('CAT_URL') . 'r=p/d&id=' . $realGoodId . '&type=3'; //请求商品详情的地址
+        $res = requestUrl($catUrl, 'GET');
+        if (empty($res)) {
+            return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+        }
+        $pattern = '/goodsItem = (.*?);/'; //正则匹配规则
+        if (!empty($res) && preg_match($pattern, $res, $result)) {
+            $json = json_decode($result[1]);
+            $rules = [
+                'shopName' => ['.info.col-mar > .text > h3', 'text'], //采集首页海报图片地址
+                'shopIcon' => ['.info.col-mar > img', 'data-original'],
+            ]; //queryList的匹配规则
+            $shopInfo = QueryList::rules($rules)->html($res)->query()->getData();
+            if (empty($shopInfo)) {
+                return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+            }
+            $json->shopIcon = $shopInfo[0]['shopIcon'];
+            $json->shopName = $shopInfo[0]['shopName'];
+            $imgList = QueryList::html($res)->find('.imglist > img')->attrs('data-original')->map(function ($item) {
+                return 'https:' . $item;
+            })->all();
+
+            if (!Cache::has('imgList' . $realGoodId)) {
+                Cache::set('imgList' . $realGoodId, $imgList, 60 * 60 * 2); //缓存两个小时
+            }
+
+            //根据商品的真实ID进行商品内容图的存储
+            return json($json);
+        }
+        return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
     }
 
 }

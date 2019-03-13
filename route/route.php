@@ -23,6 +23,7 @@ Route::group('cat/api', [
     '/getGoodDetail' => ['cat/api/getGoodDetail'], //获取商品详情
     '/getGoodCodeText' => ['cat/api/getGoodCodeText'], //获取商品淘口令
     '/getGoodDescImg' => ['cat/api/getGoodDescImg'], //根据商品的真实ID获取商品的主图信息
+    '/getGoodDetailByRealId' => ['cat/api/getGoodDetailByRealId'], //根据商品真实（即淘宝内部ID）获取商品信息
 ])->ext('do')->method('POST');
 
 return [
