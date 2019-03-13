@@ -40,7 +40,24 @@ class Api
      */
     public function getWxAppStatus($versionId = '1.0.0')
     {
+
+        if (Cache::has('WX_STATUS' . $versionId)) {
+            return json(new ResponseObj([
+                'status' => 1,
+                'showMessage' => '操作成功',
+                'data' => $result,
+            ]));
+        }
+
         $wxAppStatus = WxAppStatus::get($versionId);
+        if (empty($wxAppStatus)) {
+            return json([
+                'status' => 0,
+                'showMessage' => '操作失败',
+                'data' => '',
+            ]);
+        }
+
         $catApiUrl = Config('CAT_API_URL'); //购物猫api地址
         $result = [
             'status' => $wxAppStatus['status'],
@@ -53,6 +70,7 @@ class Api
             'showMessage' => '操作成功',
             'data' => $result,
         ]);
+        Cache::set('WX_STATUS' . $versionId, value, 60 * 60 * 12);
         return json($model);
     }
 
@@ -211,7 +229,11 @@ class Api
         if (empty($realGoodId) || !Cache::has('imgList' . $realGoodId)) {
             return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
         }
-        return json(Cache::get('imgList' . $realGoodId));
+
+        $images = Cache::get('imgList' . $realGoodId);
+        return json([
+            'status' => 1, 'messange' => '操作成功', 'data' => ['images' => $images],
+        ]);
     }
 
     /**
@@ -219,7 +241,7 @@ class Api
      */
     public function getGoodDetailByRealId($realGoodId = '')
     {
-        if (empty($realGoodId) || !Cache::has('imgList' . $realGoodId)) {
+        if (empty($realGoodId)) {
             return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
         }
 
