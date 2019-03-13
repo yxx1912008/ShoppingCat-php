@@ -148,6 +148,7 @@ class Api
 
     /**
      * 获取商品详情
+     * 并缓存商品主图列表
      *
      */
     public function getGoodDetail($goodId = '')
@@ -157,22 +158,27 @@ class Api
         }
         $catUrl = Config('CAT_URL') . 'r=p/d&id=' . $goodId; //请求商品详情的地址
         $res = requestUrl($catUrl, 'GET');
-        
-        
-        
         if (empty($res)) {
             return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
         }
-
-        $rules = [
-            'bannerImg' => ['.banner-center > .swiper-wrapper > .swiper-slide a img', 'src'], //采集首页海报图片地址
-            'goodId' => ['.banner-center > .swiper-wrapper > .swiper-slide > a', 'href'],
-        ]; //queryList的匹配规则
-        $html = QueryList::get($catUrl)->rules($rules)->query()->getData();
-
-
-
-        return $res;
+        $pattern = '/goodsItem = (.*?);/'; //正则匹配规则
+        if (!empty($res) && preg_match($pattern, $res, $result)) {
+            $json = json_decode($result[1]);
+            $rules = [
+                'shopName' => ['.info.col-mar > .text > h3', 'text'], //采集首页海报图片地址
+                'shopIcon' => ['.info.col-mar > img', 'data-original'],
+                'imgList' => ['.imglist > img', 'data-original'],
+            ]; //queryList的匹配规则
+            $shopInfo = QueryList::rules($rules)->html($res)->query()->getData();
+            if (empty($shopInfo)) {
+                return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+            }
+            $json->shopIcon = $shopInfo[0]['shopIcon'];
+            $json->shopName = $shopInfo[0]['shopName'];
+            Cache::set('imgList', $shopInfo[0]['imgList'], 60 * 60 * 2); //缓存两个小时
+            return json($json);
+        }
+        return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
     }
 
 }
