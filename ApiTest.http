@@ -17,3 +17,9 @@ POST  http://127.0.0.1/cat/api/searchGood.do HTTP/1.1
 
 ### 6.商品详情
 POST  http://127.0.0.1/cat/api/getGoodDetail.do?goodId=18644272 HTTP/1.1
+
+### 6.获取商品淘口令
+POST  http://127.0.0.1/cat/api/getGoodCodeText.do?goodId=18644272 HTTP/1.1
+
+
+
