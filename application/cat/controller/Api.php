@@ -120,9 +120,15 @@ class Api
         $html = QueryList::get($catUrl)->getHtml();
         $pattern = '/indexWillBring","data":(.*?),"mta_name"/'; //正则匹配规则
         if (preg_match($pattern, $html, $result)) {
-            $json = json_decode($result[1]);
-            Cache::set('CUTTENT_BUY', $json->config->list, 10);
-            return json($json->config->list);
+            $resultList = json_decode($result[1])->config->list;
+            foreach ($resultList as $obj) {
+                if ($obj->quan_over > 10000) {
+                    $obj->quan_over = strval(round($obj->quan_over / 10000.00, 2)) . '万';
+                }
+                $obj->nowPrice = bcsub($obj->yuanjia, $obj->quan_jine, 2);
+            }
+            Cache::set('CUTTENT_BUY', $resultList, 60 * 60 * 1);
+            return json($resultList);
         }
         return ['status' => 0, 'messange' => '操作失败', 'data' => ''];
 
