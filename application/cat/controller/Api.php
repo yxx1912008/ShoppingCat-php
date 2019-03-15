@@ -45,7 +45,7 @@ class Api
             return json(new ResponseObj([
                 'status' => 1,
                 'showMessage' => '操作成功',
-                'data' => $result,
+                'data' => Cache::get('WX_STATUS' . $versionId),
             ]));
         }
 
@@ -70,7 +70,7 @@ class Api
             'showMessage' => '操作成功',
             'data' => $result,
         ]);
-        Cache::set('WX_STATUS' . $versionId, value, 60 * 60 * 24 * 15);
+        Cache::set('WX_STATUS' . $versionId, $result, 60 * 60 * 24 * 15);
         return json($model);
     }
 
