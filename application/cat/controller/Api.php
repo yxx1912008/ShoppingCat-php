@@ -70,7 +70,7 @@ class Api
             'showMessage' => '操作成功',
             'data' => $result,
         ]);
-        Cache::set('WX_STATUS' . $versionId, value, 60 * 60 * 12);
+        Cache::set('WX_STATUS' . $versionId, value, 60 * 60 * 24 * 15);
         return json($model);
     }
 
@@ -283,4 +283,16 @@ class Api
         return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
     }
 
+    /**
+     * 查询代理区域
+     */
+    public function queryAgent($areaName = '')
+    {
+        $result = [
+            'areaName' => '杭州市',
+            'level' => 'C级',
+            'price' => '30万',
+        ];
+        return json(['status' => 1, 'messange' => '操作成功', 'data' => $result]);
+    }
 }

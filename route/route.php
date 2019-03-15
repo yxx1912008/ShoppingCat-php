@@ -24,6 +24,8 @@ Route::group('cat/api', [
     '/getGoodCodeText' => ['cat/api/getGoodCodeText'], //获取商品淘口令
     '/getGoodDescImg' => ['cat/api/getGoodDescImg'], //根据商品的真实ID获取商品的主图信息
     '/getGoodDetailByRealId' => ['cat/api/getGoodDetailByRealId'], //根据商品真实（即淘宝内部ID）获取商品信息
+    '/queryAgent' => ['cat/api/queryAgent'], //伪装页面，查询代理区域
+    '/clearCache' => ['cat/api/clearCache'],
 ])->ext('do')->method('POST');
 
 return [
