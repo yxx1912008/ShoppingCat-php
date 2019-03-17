@@ -17,9 +17,9 @@ return [
     // 数据库名
     'database'        => 'ShopCat',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'ShopCat',
     // 密码
-    'password'        => 'root',
+    'password'        => 'EGpKhsaWhmz7i2mr',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
