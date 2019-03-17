@@ -1,10 +1,52 @@
 <?php
 namespace app\wechat\controller;
 
+use app\wechat\model\SHA1;
+use think\facade\Log;
+use think\Request;
+
 class Index
 {
     public function index()
     {
-        return '<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; } body{ background: #fff; font-family: "Century Gothic","Microsoft yahei"; color: #333;font-size:18px;} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 42px }</style><div style="padding: 24px 48px;"> <h1>:) </h1><p> ThinkPHP V5.1<br/><span style="font-size:30px">12载初心不改（2006-2018） - 你值得信赖的PHP框架</span></p></div><script type="text/javascript" src="https://tajs.qq.com/stats?sId=64890268" charset="UTF-8"></script><script type="text/javascript" src="https://e.topthink.com/Public/static/client.js"></script><think id="eab4b9f840753f8e7"></think>';
+        return 'this is wechat';
     }
+
+    /**
+     * 微信授权处理
+     */
+    public function wxAuthen(Request $request)
+    {
+        if ($request->method() == 'GET') {
+            Log::error('日志信息:' . $request->get('echostr'));
+
+            $echostr = $request->get('echostr');
+            $nonce = $request->get('nonce');
+            $signature = $request->get('signature');
+            $timestamp = $request->get('timestamp');
+            if (empty($echostr) || empty($nonce) || empty($signature) || empty($timestamp)) {
+                return 'failed';
+            }
+            if ($this->checkSignature($timestamp, $echostr, $nonce, $signature)) {
+                return $echostr;
+            }
+            return 'failed';
+        } else {
+//post
+        }
+    }
+
+    /**
+     * 微信效验参数
+     */
+    public function checkSignature($timestamp, $echostr, $nonce, $signature)
+    {
+        $token = '8ff953dd97c4405234a04291dee39e0b';
+        $result = SHA1::getSHA1($token, $timestamp, $nonce, '');
+        if ($result[0] == 0 && strcasecmp($signature, $result[1]) == 0) {
+            return true;
+        }
+        return false;
+    }
+
 }

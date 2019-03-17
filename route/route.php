@@ -26,7 +26,12 @@ Route::group('cat/api', [
     '/getGoodDetailByRealId' => ['cat/api/getGoodDetailByRealId'], //根据商品真实（即淘宝内部ID）获取商品信息
     '/queryAgent' => ['cat/api/queryAgent'], //伪装页面，查询代理区域
     '/clearCache' => ['cat/api/clearCache'],
+
 ])->ext('do')->method('POST');
+
+Route::group('/wechat', [
+    '/wxAuthen' => ['wechat/index/wxAuthen'],
+])->ext("do");
 
 return [
 
