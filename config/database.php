@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '127.0.0.1',
+    'hostname'        =>  Env::get('database.hostname'),
     // 数据库名
-    'database'        => 'ShopCat',
+    'database'        => Env::get('database.database'),
     // 用户名
-    'username'        => 'ShopCat',
+    'username'        => Env::get('database.username'),
     // 密码
-    'password'        => 'EGpKhsaWhmz7i2mr',
+    'password'        => Env::get('database.password'),
     // 端口
     'hostport'        => '3306',
     // 连接dsn
