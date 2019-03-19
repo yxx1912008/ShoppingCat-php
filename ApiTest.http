@@ -30,5 +30,8 @@ POST  http://127.0.0.1/cat/api/getGoodDescImg.do?realGoodId=554905594641 HTTP/1.
 POST  http://127.0.0.1/cat/api/getGoodDetailByRealId.do?realGoodId=577334181156 HTTP/1.1
 
 
+### 9.处理微信请求
+POST  http://127.0.0.1/wechat/wxAuthen.do?yxx=xxx HTTP/1.1
+
 
 
