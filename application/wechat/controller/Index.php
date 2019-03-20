@@ -82,13 +82,17 @@ class Index
         $recText = (String) $postObj->Content;
         $content = '';
         if (strpos($recText, '优惠券') !== false) { //查询字符串中是否包含
-            $content = str_replace('优惠券', '', $recText);
+            $content = trim($recText, '优惠券');
+            $content = trim($content);
+            $url = Config('CAT_URL') . 'r=index%2Fsearch&s_type=1&kw=' . $content;
             $goodInfos = $this->searchGood($content); //搜索到的商品
             $result = [
-                'title' => $goodInfos[0]['d_title'],
-                'description' => $goodInfos[0]['description'],
+                'title' => '优惠券已找到,点击领取优惠券',
+                'description' => '查看更多优惠商品',
                 'picUrl' => $goodInfos[0]['pic'],
+                'url' => $url,
             ];
+            $this->returnNews($fromUser, $toUser, $result);
             return;
         } else {
             $content = '没找到';
@@ -129,9 +133,8 @@ class Index
     public function searchGood($keyWord)
     {
         $catUrl = Config('CAT_URL') . 'r=index%2Fsearch&s_type=1&kw=' . $keyWord;
-        Log::error('请求网址：'.$catUrl);
+        Log::error('请求网址：' . $catUrl);
         $res = requestUrl($catUrl, 'GET');
-        Log::error($res);
         $pattern = '/dtk_data=(.*?);/'; //正则匹配规则
         if (!empty($res) && preg_match($pattern, $res, $result)) {
             return json_decode($result[1], true); //转换为数组
@@ -145,7 +148,6 @@ class Index
     public function returnNews($fromUser, $toUser, $content)
     {
         $time = time();
-        $msgType = 'news';
         $template = '<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
         <FromUserName><![CDATA[%s]]></FromUserName>
@@ -161,7 +163,8 @@ class Index
           </item>
         </Articles>
       </xml>';
-        $info = sprintf($template, $toUser, $fromUser, $time, $msgType, $content['title'], $content['description'], $content['picUrl'], '');
+        $info = sprintf($template, $toUser, $fromUser, $time, $content['title'], $content['description'], $content['picUrl'], $content['url']);
+        Log::error('最终发送信息：' . $info);
         echo $info;
     }
 
