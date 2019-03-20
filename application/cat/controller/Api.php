@@ -143,7 +143,6 @@ class Api
         $catUrl = Config('CAT_URL') . 'r=index/ajaxnew&page=' . $page; //购物猫网站地址
         if (Cache::has('LIVE_CAC_ID') && !empty(Cache::get('LIVE_CAC_ID'))) {
             $catUrl = $catUrl . '&cac_id=' . Cache::get('LIVE_CAC_ID');
-            Log::info('缓存不为空' . $catUrl);
         }
         $res = requestUrl($catUrl, 'GET');
         if (empty($res)) {

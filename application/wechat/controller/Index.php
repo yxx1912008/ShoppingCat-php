@@ -134,7 +134,6 @@ class Index
     public function searchGood($keyWord)
     {
         $catUrl = Config('CAT_URL') . 'r=index%2Fsearch&s_type=1&kw=' . $keyWord;
-        Log::error('请求网址：' . $catUrl);
         $res = requestUrl($catUrl, 'GET');
         $pattern = '/dtk_data=(.*?);/'; //正则匹配规则
         if (!empty($res) && preg_match($pattern, $res, $result)) {
@@ -165,7 +164,6 @@ class Index
         </Articles>
       </xml>';
         $info = sprintf($template, $toUser, $fromUser, $time, $content['title'], $content['description'], $content['picUrl'], $content['url']);
-        Log::error('最终发送信息：' . $info);
         echo $info;
     }
 

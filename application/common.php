@@ -30,10 +30,11 @@ function requestUrl($url, $method)
     curl_close($curl);
 
     if ($err) {
+        Log::error($err);
+        Log::error($url);
         return null;
     } else {
         return $response;
     }
 
-    
 }
