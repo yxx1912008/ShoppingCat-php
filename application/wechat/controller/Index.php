@@ -95,7 +95,8 @@ class Index
             $this->returnNews($fromUser, $toUser, $result);
             return;
         } else {
-            $content = '没找到';
+            $content = "/:heart欢迎关注购物猫 /:rose\n/:heart查找优惠券，请在前面加“优惠券“\n/:heart例如：想找耳机优惠券，输入： 优惠券 耳机 \n/:heart指定商品查找优惠券，先复制淘宝商品完整标题 \n/:heart输入 :优惠券 淘宝标题，然后发给我\n/:coffee查找电影，请在电影名前加“电影”\n/:coffee要求管理员添加电影 请在电影名前加“添加”";
+            $this->returText($fromUser, $toUser, $content);
         }
         $this->returText($fromUser, $toUser, $content);
     }
@@ -123,7 +124,7 @@ class Index
      */
     public function handleSubscribe($fromUser, $toUser)
     {
-        $content = '/:heart欢迎关注购物猫 /:rose\r\n/:heart查找优惠券，请在前面加 “优惠券“\r\n/:heart例如：想找耳机优惠券，输入： 优惠券 耳机 \r\n/:heart指定商品查找优惠券，先复制淘宝商品完整标题 \r\n/:heart输入 :优惠券 淘宝标题，然后发给我\r\n/:coffee查找电影，请在电影名前加“电影”\r\n/:coffee要求管理员添加电影 请在电影名前加“添加”';
+        $content = "/:heart欢迎关注购物猫 /:rose\n/:heart查找优惠券，请在前面加 “优惠券“\n/:heart例如：想找耳机优惠券，输入： 优惠券 耳机 \n/:heart指定商品查找优惠券，先复制淘宝商品完整标题 \n/:heart输入 :优惠券 淘宝标题，然后发给我\n/:coffee查找电影，请在电影名前加“电影”\n/:coffee要求管理员添加电影 请在电影名前加“添加”";
         $this->returText($fromUser, $toUser, $content);
     }
 
