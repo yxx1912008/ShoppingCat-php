@@ -111,24 +111,6 @@ class Index
     }
 
     /**
-     * 返回纯文本微信消息
-     */
-    private function returText($fromUser, $toUser, $content)
-    {
-        $time = time();
-        $msgType = 'text';
-        $template = "<xml>
-        <ToUserName><![CDATA[%s]]></ToUserName>
-        <FromUserName><![CDATA[%s]]></FromUserName>
-        <CreateTime>%s</CreateTime>
-        <MsgType><![CDATA[%s]]></MsgType>
-        <Content><![CDATA[%s]]></Content>
-        </xml>";
-        $info = sprintf($template, $toUser, $fromUser, $time, $msgType, $content);
-        echo $info;
-    }
-
-    /**
      * 处理订阅事件
      */
     private function handleSubscribe($fromUser, $toUser)
@@ -149,6 +131,15 @@ class Index
             return json_decode($result[1], true); //转换为数组
         }
         return;
+    }
+
+    /**
+     * 测试查询电影系统
+     */
+    public function searchMovie($keyWord = '战狼')
+    {
+        $info = Db::connect('movie_database')->name('vod')->where('vod_name', 'like', $keyWord)->find();
+        return $info;
     }
 
 /**
@@ -178,12 +169,21 @@ class Index
     }
 
     /**
-     * 测试查询电影系统
+     * 返回纯文本微信消息
      */
-    public function searchMovie($keyWord = '战狼')
+    private function returText($fromUser, $toUser, $content)
     {
-        $info = Db::connect('movie_database')->name('vod')->where('vod_name', 'like', $keyWord)->find();
-        return $info;
+        $time = time();
+        $msgType = 'text';
+        $template = "<xml>
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[%s]]></MsgType>
+        <Content><![CDATA[%s]]></Content>
+        </xml>";
+        $info = sprintf($template, $toUser, $fromUser, $time, $msgType, $content);
+        echo $info;
     }
 
 }
