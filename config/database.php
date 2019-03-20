@@ -60,4 +60,24 @@ return [
     'break_reconnect' => false,
     // 断线标识字符串
     'break_match_str' => [],
+
+//小鹿影音 电影数据库
+    'movie_database' => [
+        // 数据库类型
+        'type' => 'mysql',
+        // 服务器地址
+        'hostname' => '222.187.221.167',
+        'hostport' => '3306',
+        // 数据库名
+        'database' => 's0341913',
+        // 数据库用户名
+        'username' => 's0341913',
+        // 数据库密码
+        'password' => '110110',
+        // 数据库编码默认采用utf8
+        'charset' => 'utf8',
+        // 数据库表前缀
+        'prefix' => 'mac_',
+    ],
+
 ];
