@@ -10,6 +10,9 @@ class Index
 {
     public function index()
     {
+
+        $res = Config('CAT_URL');
+        return $res;
         return 'this is cat module';
     }
 

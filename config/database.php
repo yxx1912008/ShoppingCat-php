@@ -78,6 +78,10 @@ return [
         'charset' => 'utf8',
         // 数据库表前缀
         'prefix' => 'mac_',
+        // 数据集返回类型
+        'resultset_type' => 'array',
+        // 数据库编码默认采用utf8
+        'charset' => 'utf8',
     ],
 
 ];

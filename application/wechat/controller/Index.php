@@ -2,7 +2,6 @@
 namespace app\wechat\controller;
 
 use app\wechat\model\SHA1;
-use think\DB;
 use think\facade\Log;
 use think\Request;
 
@@ -56,19 +55,15 @@ class Index
     {
         // $postArr = $GLOBALS['HTTP_RAW_POST_DATA']; //读取微信传过来的文件流
         $postArr = file_get_contents("php://input");
-        Log::error($postArr);
         $postObj = simplexml_load_string($postArr);
-
         if (strtolower($postObj->MsgType) == 'event') {
             if (strtolower($postObj->Event == 'subscribe')) { //如果是订阅事件
                 $this->handleSubscribe($postObj->ToUserName, $postObj->FromUserName);
             }
         }
-
         if (strtolower($postObj->MsgType) == 'text') { //是否是用户的文本消息
             $this->handleText($postObj);
         }
-
         return 'OK';
     }
 
@@ -83,10 +78,12 @@ class Index
         $recText = (String) $postObj->Content;
         $recText = trim($recText); //去掉空格
         $content = '';
+        $urlStr = Config('CAT_URL');
         if (strpos($recText, '优惠券') !== false) { //查询字符串中是否包含
             $content = trim($recText, '优惠券');
             $url = Config('CAT_URL') . 'r=index%2Fsearch&s_type=1&kw=' . $content;
             $goodInfos = $this->searchGood($content); //搜索到的商品
+            Log::error($goodInfos[0]['pic']);
             $result = [
                 'title' => '优惠券已找到,点击领取优惠券',
                 'description' => '查看更多优惠商品',
@@ -95,16 +92,18 @@ class Index
             ];
             $this->returnNews($fromUser, $toUser, $result);
             return;
-        } else if (strpos($recText, '电影') !== false) { //电影搜索逻辑
+        }
+        if (strpos($recText, '电影') !== false) { //电影搜索逻辑
             $content = trim($recText, '电影');
-            $movieInfo = $this->searchMovie($content);
+            $info = db('vod', 'movie_database')->where('vod_name', 'like', $content)->find();
             $result = [
                 'title' => '影视《' . $content . '》已经找到，点击查看更多信息',
                 'description' => '查看更多电影信息',
-                'picUrl' => Config('MOVIE_URL') . $movieInfo['vod_pic'],
+                'picUrl' => $info['vod_pic'],
                 'url' => Config('MOVIE_URL') . 'index.php/vod/search.html?wd=' . $content,
             ];
             $this->returnNews($fromUser, $toUser, $result);
+            return;
         }
         $content = "/:heart欢迎关注购物猫 /:rose\n/:heart查找优惠券，请在前面加“优惠券“\n/:heart例如：想找耳机优惠券，输入： 优惠券 耳机 \n/:heart指定商品查找优惠券，先复制淘宝商品完整标题 \n/:heart输入 :优惠券 淘宝标题，然后发给我\n/:coffee查找电影，请在电影名前加“电影”\n/:coffee要求管理员添加电影 请在电影名前加“添加”";
         $this->returText($fromUser, $toUser, $content);
@@ -131,15 +130,6 @@ class Index
             return json_decode($result[1], true); //转换为数组
         }
         return;
-    }
-
-    /**
-     * 测试查询电影系统
-     */
-    public function searchMovie($keyWord = '战狼')
-    {
-        $info = Db::connect('movie_database')->name('vod')->where('vod_name', 'like', $keyWord)->find();
-        return $info;
     }
 
 /**
@@ -183,6 +173,7 @@ class Index
         <Content><![CDATA[%s]]></Content>
         </xml>";
         $info = sprintf($template, $toUser, $fromUser, $time, $msgType, $content);
+        Log::error($info);
         echo $info;
     }
 

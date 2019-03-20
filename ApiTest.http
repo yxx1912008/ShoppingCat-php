@@ -36,3 +36,8 @@ POST  http://127.0.0.1/wechat/wxAuthen.do?yxx=xxx HTTP/1.1
 
 ### 10.测试电影数据库查询
 POST  http://127.0.0.1/wechat/index/searchMovie?keyWord=战狼 HTTP/1.1
+
+
+
+### 10.测试电影数据库查询
+POST  http://127.0.0.1/wechat/test/ HTTP/1.1
