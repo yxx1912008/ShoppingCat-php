@@ -13,7 +13,7 @@ POST http://127.0.0.1/cat/api/getCurrentQiang.do HTTP/1.1
 POST http://127.0.0.1/cat/api/getTicketLive.do?page=4 HTTP/1.1 
 
 ### 5.搜索商品
-POST  http://127.0.0.1/cat/api/searchGood.do HTTP/1.1 
+POST  http://127.0.0.1/cat/api/searchGood.do?keyWord=宝宝金水 HTTP/1.1 
 
 ### 6.商品详情
 POST  http://127.0.0.1/cat/api/getGoodDetail.do?goodId=18644272 HTTP/1.1
