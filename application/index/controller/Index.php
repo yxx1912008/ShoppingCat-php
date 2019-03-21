@@ -12,4 +12,16 @@ class Index
     {
         return 'hello,' . $name;
     }
+
+    /**
+     * 测试邮件发送
+     */
+    public function testEmail()
+    {
+        if (sendEmail('测试邮件', '我是测试邮件', '15507700062@qq.com')) {
+            return 'OK';
+        }
+        return 'False';
+    }
+
 }
