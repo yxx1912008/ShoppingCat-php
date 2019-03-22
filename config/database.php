@@ -82,6 +82,8 @@ return [
         'resultset_type' => 'array',
         // 数据库编码默认采用utf8
         'charset' => 'utf8',
+        // Query类
+        'query' => '\\think\\db\\Query',
     ],
 
 ];
