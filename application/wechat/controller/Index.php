@@ -2,6 +2,7 @@
 namespace app\wechat\controller;
 
 use app\wechat\model\SHA1;
+use app\wechat\model\Vod;
 use think\facade\Log;
 use think\Request;
 
@@ -31,7 +32,6 @@ class Index
             return 'failed';
         } else { //post
             $this->handleWechat();
-            return 'OK';
         }
     }
 
@@ -69,6 +69,7 @@ class Index
 
     /**
      * 处理用户发来的微信消息
+     * 消息一定要处理干净空格
      */
     private function handleText($postObj)
     {
@@ -76,14 +77,14 @@ class Index
         $toUser = $postObj->FromUserName;
         $fromUser = $postObj->ToUserName;
         $recText = (String) $postObj->Content;
-        $recText = trim($recText); //去掉空格
+        $recText = str_replace(' ', '', $recText);
         $content = '';
         $urlStr = Config('CAT_URL');
         if (strpos($recText, '优惠券') !== false) { //查询字符串中是否包含
             $content = trim($recText, '优惠券');
+            Log::error($content);
             $url = Config('CAT_URL') . 'r=index%2Fsearch&s_type=1&kw=' . $content;
             $goodInfos = $this->searchGood($content); //搜索到的商品
-            Log::error($goodInfos[0]['pic']);
             $result = [
                 'title' => '优惠券已找到,点击领取优惠券',
                 'description' => '查看更多优惠商品',
@@ -95,11 +96,11 @@ class Index
         }
         if (strpos($recText, '电影') !== false) { //电影搜索逻辑
             $content = trim($recText, '电影');
-            $info = db('vod', 'movie_database')->where('vod_name', 'like', $content)->find();
+            $vod = Vod::where('vod_name', 'like', '%' . $content . '%')->find();
             $result = [
                 'title' => '影视《' . $content . '》已经找到，点击查看更多信息',
                 'description' => '查看更多电影信息',
-                'picUrl' => $info['vod_pic'],
+                'picUrl' => $vod->vod_pic,
                 'url' => Config('MOVIE_URL') . 'index.php/vod/search.html?wd=' . $content,
             ];
             $this->returnNews($fromUser, $toUser, $result);
