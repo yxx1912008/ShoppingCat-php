@@ -3,7 +3,6 @@ namespace app\wechat\controller;
 
 use app\wechat\model\SHA1;
 use app\wechat\model\Vod;
-use think\facade\Log;
 use think\Request;
 
 class Index
@@ -82,7 +81,6 @@ class Index
         $urlStr = Config('CAT_URL');
         if (strpos($recText, '优惠券') !== false) { //查询字符串中是否包含
             $content = trim($recText, '优惠券');
-            Log::error($content);
             $url = Config('CAT_URL') . 'r=index%2Fsearch&s_type=1&kw=' . $content;
             $goodInfos = $this->searchGood($content); //搜索到的商品
             $result = [
@@ -155,7 +153,6 @@ class Index
         </Articles>
       </xml>';
         $info = sprintf($template, $toUser, $fromUser, $time, $content['title'], $content['description'], $content['picUrl'], $content['url']);
-        Log::error($info);
         echo $info;
     }
 
@@ -174,7 +171,6 @@ class Index
         <Content><![CDATA[%s]]></Content>
         </xml>";
         $info = sprintf($template, $toUser, $fromUser, $time, $msgType, $content);
-        Log::error($info);
         echo $info;
     }
 
