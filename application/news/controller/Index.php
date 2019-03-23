@@ -8,9 +8,9 @@ use QL\QueryList;
 
 class Index
 {
-    public function index()
+    public function index($page = 1)
     {
-        $res = requestUrl('https://m.huxiu.com/maction/article_list?page=1', 'POST');
+        $res = requestUrl('https://m.huxiu.com/maction/article_list?page=' . $page, 'POST');
         $res = json_decode($res)->data;
         $html = QueryList::html($res);
 
