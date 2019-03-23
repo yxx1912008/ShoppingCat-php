@@ -20,6 +20,7 @@ class Index
             'author' => ['.rec-author.fl', 'text'],
             'favorites' => ['.rec-article-time.clearfix > .fr', 'text'],
             'updateTime' => ['.rec-author.fl+.fl', 'text'],
+            'newsId' => ['.rec-article-pic.fr', 'href'],
         ];
 
         $result = $html->rules($rules)->query()->getData(function ($item) {
@@ -29,7 +30,9 @@ class Index
             if (!empty($item['updateTime'])) {
                 $item['updateTime'] = trim($item['updateTime'], " \r\n");
             }
-
+            if (preg_match('/\/article\/(\d+).html/', $item['newsId'], $result)) {
+                $item['newsId'] = $result[1];
+            }
             return $item;
         });
         print_r($result);
