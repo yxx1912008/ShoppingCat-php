@@ -35,7 +35,6 @@ class Index
                 $item['newsId'] = $result[1];
             }
             if (preg_match('/(.+?)\?/', $item['img'], $result)) {
-                dump($result);
                 $item['img'] = $result[1];
             }
             return $item;
