@@ -21,6 +21,7 @@ class Index
             'favorites' => ['.rec-article-time.clearfix > .fr', 'text'],
             'updateTime' => ['.rec-author.fl+.fl', 'text'],
             'newsId' => ['.rec-article-pic.fr', 'href'],
+            'img' => ['.lazy', 'data-original'],
         ];
 
         $result = $html->rules($rules)->query()->getData(function ($item) {
@@ -32,6 +33,10 @@ class Index
             }
             if (preg_match('/\/article\/(\d+).html/', $item['newsId'], $result)) {
                 $item['newsId'] = $result[1];
+            }
+            if (preg_match('/(.+?)\?/', $item['img'], $result)) {
+                dump($result);
+                $item['img'] = $result[1];
             }
             return $item;
         });
