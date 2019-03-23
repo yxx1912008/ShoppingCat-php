@@ -34,15 +34,13 @@ POST  http://127.0.0.1/cat/api/getGoodDetailByRealId.do?realGoodId=577334181156 
 POST  http://127.0.0.1/wechat/wxAuthen.do?yxx=xxx HTTP/1.1
 
 
-### 10.测试电影数据库查询
-POST  http://127.0.0.1/wechat/index/searchMovie?keyWord=战狼 HTTP/1.1
-
-
-
 ### 10.测试邮件发送
 POST  http://127.0.0.1/index/index/testEmail/ HTTP/1.1
 
 
-
-### 10.测试邮件发送
+### 11.测试电影搜索
 POST  http://127.0.0.1/wechat/index/getMoviePic?content=仙剑 HTTP/1.1
+
+
+### 12.新闻爬取
+POST  http://127.0.0.1/news/index/index HTTP/1.1
