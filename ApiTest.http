@@ -43,4 +43,7 @@ POST  http://127.0.0.1/wechat/index/getMoviePic?content=仙剑 HTTP/1.1
 
 
 ### 12.新闻爬取
-POST  http://127.0.0.1/news/index/index?page=3 HTTP/1.1
+POST  http://127.0.0.1/news/index/getNewsList?page=1 HTTP/1.1
+
+### 12.新闻详情
+POST  http://127.0.0.1/news/index/getNewsDetail?newId=290679 HTTP/1.1

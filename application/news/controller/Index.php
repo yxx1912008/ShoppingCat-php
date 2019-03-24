@@ -8,7 +8,11 @@ use QL\QueryList;
 
 class Index
 {
-    public function index($page = 1)
+
+    /**
+     * 获取新闻列表
+     */
+    public function getNewsList($page = 1)
     {
         $res = requestUrl('https://m.huxiu.com/maction/article_list?page=' . $page, 'POST');
         $res = json_decode($res)->data;
@@ -39,7 +43,33 @@ class Index
             }
             return $item;
         });
+        return json($result);
+    }
+
+    /**
+     * 获取文章信息
+     */
+    public function getNewsDetail($newId = "")
+    {
+        if (empty($newId)) {
+            return json(['status' => '0', 'messange' => '操作失败', 'data' => '']);
+        }
+        $newUrl = 'https://m.huxiu.com/article/' . $newId;
+        $html = QueryList::get($newUrl);
+
+        $rules = [
+            // 采集文章标题
+            'title' => ['title', 'text'],
+            'author' => ['.username.fl', 'text'],
+            //  'favorites' => ['.rec-article-time.clearfix > .fr', 'text'],
+            'updateTime' => ['.m-article-time', 'text'],
+            //  'newsId' => ['.rec-article-pic.fr', 'href'],
+            'content' => ['#article-detail-content', 'html','-.neirong-shouquan -.text-remarks'],
+            'mainImg' => ['.article-content-img > img', 'data-original'],
+        ];
+        $result = $html->rules($rules)->queryData();
         print_r($result);
+
     }
 
 }
