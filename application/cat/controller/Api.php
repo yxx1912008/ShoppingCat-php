@@ -6,7 +6,6 @@ use app\cat\model\ResponseObj;
 use app\cat\model\WxAppStatus;
 use QL\QueryList; //网页抓取依赖
 use think\facade\Cache;
-use think\facade\Log;
 
 //缓存依赖
 
@@ -103,8 +102,10 @@ class Api
                 array_push($list, $model);
             }
         }
-        Cache::set('BANNER_CACHE', $list, Config('BANNER_CACHE_TIME'));
-        return json($list);
+
+        $result = ['status' => '1', 'messange' => '操作成功', 'data' => $list];
+        Cache::set('BANNER_CACHE', $result, Config('BANNER_CACHE_TIME'));
+        return json($result);
     }
 
     /**
