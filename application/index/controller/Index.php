@@ -1,6 +1,9 @@
 <?php
 namespace app\index\controller;
 
+use \think\facade\Controller;
+use \think\facade\Request;
+
 class Index
 {
     public function index()
@@ -10,7 +13,14 @@ class Index
 
     public function hello($name = 'ThinkPHP5')
     {
-        return 'hello,' . $name;
+        $info = Request::instance()->header();
+        $agent = $info['user-agent'];
+        if (stristr($agent, 'iPhone')) {
+            return redirect('http://baidu.com');
+        } else {
+            return "非苹果浏览器";
+        }
+
     }
 
     /**
