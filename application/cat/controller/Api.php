@@ -221,10 +221,16 @@ class Api
         if (empty($goodId)) {
             return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
         }
-        $catUrl = Config('CAT_URL') . 'r=p/d&id=' . $goodId; //请求商品详情的地址
         //TODO 关键 获取淘口令需要调用淘宝官方接口
-        $html = QueryList::get($catUrl)->getHtml();
-        return $html;
+        $res = json_decode(requestUrl('http://api.dataoke.com/index.php?r=port/index&appkey=9fd28eba55&v=2&id=' . $goodId, 'GET'));
+        if (empty($res)) {
+            return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+        }
+        $code = $res->result->Quan_link;
+        return json(['status' => 1, 'messange' => '操作成功', 'data' => $code]);
+
+        // $html = QueryList::get($catUrl)->getHtml();
+        //return $html;
     }
 
     /**
