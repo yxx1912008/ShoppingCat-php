@@ -203,6 +203,18 @@ class Api
                 return 'https:' . $item;
             })->all();
 
+            $c = new \TopClient;
+            $c->appkey = '27544223';
+            $c->secretKey = '33b76ba3db5d9b176915f052936c4944';
+            $req = new \TbkTpwdCreateRequest;
+            $req->setUserId("123");
+            $req->setText($json->title);
+            $req->setUrl($json->quan_link);
+            $req->setLogo($json->pic);
+            $req->setExt("{}");
+            $resp = $c->execute($req);
+            $json->kouling = (String) ($resp->data->model);
+
             if (!Cache::has('imgList' . $json->goodsid)) {
                 //根据商品的真实ID进行商品内容图的存储
                 Cache::set('imgList' . $json->goodsid, $imgList, 60 * 60 * 2); //缓存两个小时
