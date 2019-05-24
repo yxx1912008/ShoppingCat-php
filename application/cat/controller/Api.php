@@ -3,12 +3,13 @@ namespace app\cat\controller;
 
 use app\cat\model\BannerModel;
 use app\cat\model\ResponseObj;
-use app\cat\model\WxAppStatus;
-use QL\QueryList; //网页抓取依赖
+use app\cat\model\WxAppStatus; //网页抓取依赖
+use QL\QueryList;
 use think\facade\Cache;
 
-//缓存依赖
+require "../extend/tb/TopSdk.php";
 
+//缓存依赖
 //日志依赖
 
 /**
@@ -226,11 +227,17 @@ class Api
         if (empty($res)) {
             return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
         }
-        $code = $res->result->Quan_link;
-        return json(['status' => 1, 'messange' => '操作成功', 'data' => $code]);
-
-        // $html = QueryList::get($catUrl)->getHtml();
-        //return $html;
+        $c = new \TopClient;
+        $c->appkey = '27544223';
+        $c->secretKey = '33b76ba3db5d9b176915f052936c4944';
+        $req = new \TbkTpwdCreateRequest;
+        $req->setUserId("123");
+        $req->setText($res->result->Title);
+        $req->setUrl($res->result->Quan_link);
+        $req->setLogo($res->result->Pic);
+        $req->setExt("{}");
+        $resp = $c->execute($req);
+        return json(['status' => 1, 'messange' => '操作成功', 'data' => (String)($resp->data->model)]);
     }
 
     /**
