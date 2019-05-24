@@ -294,6 +294,17 @@ class Api
             }
             $json->shopIcon = $shopInfo[0]['shopIcon'];
             $json->shopName = $shopInfo[0]['shopName'];
+            $c = new \TopClient;
+            $c->appkey = '27544223';
+            $c->secretKey = '33b76ba3db5d9b176915f052936c4944';
+            $req = new \TbkTpwdCreateRequest;
+            $req->setUserId("123");
+            $req->setText($json->title);
+            $req->setUrl($json->tklink);
+            $req->setLogo($json->pic);
+            $req->setExt("{}");
+            $resp = $c->execute($req);
+            $json->kouling = (String) ($resp->data->model);
             $imgList = QueryList::html($res)->find('.imglist > img')->attrs('data-original')->map(function ($item) {
                 return 'https:' . $item;
             })->all();
