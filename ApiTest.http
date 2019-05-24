@@ -19,7 +19,7 @@ POST  http://127.0.0.1/cat/api/searchGood.do?keyWord=宝宝金水 HTTP/1.1
 POST  http://127.0.0.1/cat/api/getGoodDetail.do?goodId=18644272 HTTP/1.1
 
 ### 6.获取商品淘口令
-POST  http://127.0.0.1/cat/api/getGoodCodeText.do?goodId=18644272 HTTP/1.1
+POST  http://127.0.0.1/cat/api/getGoodCodeText.do?goodId=19944032 HTTP/1.1
 
 
 ### 7.获取商品介绍主图
