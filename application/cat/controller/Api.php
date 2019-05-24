@@ -237,7 +237,7 @@ class Api
         $req->setLogo($res->result->Pic);
         $req->setExt("{}");
         $resp = $c->execute($req);
-        return json(['status' => 1, 'messange' => '操作成功', 'data' => (String)($resp->data->model)]);
+        return json(['status' => 1, 'messange' => '操作成功', 'data' => (String) ($resp->data->model)]);
     }
 
     /**
