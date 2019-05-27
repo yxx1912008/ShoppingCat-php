@@ -164,10 +164,14 @@ class Api
     {
         $catUrl = Config('CAT_URL') . 'r=index/classify&kw=' . $keyWords;
         $res = requestUrl($catUrl, 'GET');
-       \dump($res);
         $pattern = '/goodsItem =(.*?);/'; //正则匹配规则
         if (!empty($res) && preg_match($pattern, $res, $result)) {
-            return $result[1];
+            $temp = \json_decode($result[1]);
+            foreach ($temp as $obj) {
+                $obj->goodsid=$obj->id;
+                //$obj->goodsid = (String)$obj->id;
+            }
+            return json($temp);
         }
         return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
     }
@@ -277,7 +281,7 @@ class Api
             return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
         }
 
-        $catUrl = Config('CAT_URL') . 'r=p/d&id=' . $realGoodId . '&type=3'; //请求商品详情的地址
+        $catUrl = Config('CAT_URL') . 'r=p/d&id=' . $realGoodId . '&type=undefined'; //请求商品详情的地址
         $res = requestUrl($catUrl, 'GET');
         if (empty($res)) {
             return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
