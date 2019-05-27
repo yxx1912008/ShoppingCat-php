@@ -162,9 +162,10 @@ class Api
      */
     public function searchGood($keyWords = '洗护沐浴')
     {
-        $catUrl = Config('CAT_URL') . 'r=index%2Fsearch&s_type=1&kw=' . $keyWords;
+        $catUrl = Config('CAT_URL') . 'r=index/classify&kw=' . $keyWords;
         $res = requestUrl($catUrl, 'GET');
-        $pattern = '/dtk_data=(.*?);/'; //正则匹配规则
+       \dump($res);
+        $pattern = '/goodsItem =(.*?);/'; //正则匹配规则
         if (!empty($res) && preg_match($pattern, $res, $result)) {
             return $result[1];
         }
