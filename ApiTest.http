@@ -13,10 +13,10 @@ POST http://127.0.0.1/cat/api/getCurrentQiang.do HTTP/1.1
 POST http://127.0.0.1/cat/api/getTicketLive.do?page=4 HTTP/1.1 
 
 ### 5.搜索商品
-POST  http://127.0.0.1/cat/api/searchGood.do?keyWord=宝宝金水 HTTP/1.1 
+POST  http://127.0.0.1/cat/api/searchGood.do?keyWords=宝宝金水 HTTP/1.1 
 
 ### 6.商品详情
-POST  http://127.0.0.1/cat/api/getGoodDetail.do?goodId=18644272 HTTP/1.1
+POST  http://127.0.0.1/cat/api/getGoodDetail.do?goodId=20016075 HTTP/1.1
 
 ### 6.获取商品淘口令
 POST  http://127.0.0.1/cat/api/getGoodCodeText.do?goodId=19944032 HTTP/1.1
@@ -27,7 +27,7 @@ POST  http://127.0.0.1/cat/api/getGoodDescImg.do?realGoodId=554905594641 HTTP/1.
 
 
 ### 8.根据商品真实ID获取商品信息
-POST  http://127.0.0.1/cat/api/getGoodDetailByRealId.do?realGoodId=577334181156 HTTP/1.1
+POST  http://127.0.0.1/cat/api/getGoodDetailByRealId.do?realGoodId=19982320 HTTP/1.1
 
 
 ### 9.处理微信请求
@@ -47,3 +47,7 @@ POST  http://127.0.0.1/news/index/getNewsList?page=1 HTTP/1.1
 
 ### 12.新闻详情
 POST  http://127.0.0.1/news/index/getNewsDetail?newId=290679 HTTP/1.1
+
+
+### 13.查询领券次数
+POST  http://127.0.0.1/cat/api/ticketCount.do HTTP/1.1

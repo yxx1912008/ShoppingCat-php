@@ -164,11 +164,11 @@ class Api
     {
         $catUrl = Config('CAT_URL') . 'r=index/classify&kw=' . $keyWords;
         $res = requestUrl($catUrl, 'GET');
-        $pattern = '/goodsItem =(.*?);/'; //正则匹配规则
+        $pattern = '/goodsItem =(.*?)];/'; //正则匹配规则
         if (!empty($res) && preg_match($pattern, $res, $result)) {
-            $temp = \json_decode($result[1]);
+            $temp = \json_decode($result[1] . ']');
             foreach ($temp as $obj) {
-                $obj->goodsid=$obj->id;
+                $obj->goodsid = $obj->id;
                 //$obj->goodsid = (String)$obj->id;
             }
             return json($temp);
@@ -336,4 +336,23 @@ class Api
         ];
         return json(['status' => 1, 'messange' => '操作成功', 'data' => $result]);
     }
+
+    /**
+     * 总领券次数
+     */
+    public function ticketCount()
+    {
+        try {
+            $catUrl = Config('CAT_URL') . 'r=index/getquannum'; //购物猫网站地址
+            $res = json_decode(requestUrl($catUrl, 'GET'));
+            if (empty($res)) {
+                return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+            }
+            $result = $res->data[0]->coupon_num;
+            return json(['status' => 1, 'messange' => '操作成功', 'data' => $result]);
+        } catch (\Throwable $th) {
+            return json(['status' => 0, 'messange' => '操作失败', 'data' => '']);
+        }
+    }
+
 }
